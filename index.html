@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emmet Master Pro — Domina la sintaxis como un experto</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- ===== TOPBAR ===== -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">⚡</span>
+      <h1>Emmet<span>Master</span> <small>PRO</small></h1>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="practice" role="tab">🎯 Práctica</button>
+      <button class="tab" data-tab="learn" role="tab">📖 Aprender</button>
+      <button class="tab" data-tab="playground" role="tab">🧪 Playground</button>
+      <button class="tab" data-tab="cheatsheet" role="tab">📚 Cheatsheet</button>
+      <button class="tab" data-tab="stats" role="tab">📊 Estadísticas</button>
+    </nav>
+    <div class="topbar-actions">
+      <div class="xp-display" title="Experiencia acumulada">
+        <span class="xp-icon">⭐</span>
+        <span id="xp-value">0</span> XP
+      </div>
+      <button id="btn-theme" class="icon-btn" title="Cambiar tema">🌙</button>
+      <button id="btn-sound" class="icon-btn" title="Sonidos">🔊</button>
+    </div>
+  </header>
+
+  <!-- ===== BARRA DE PROGRESO GLOBAL ===== -->
+  <div class="global-progress">
+    <div class="global-progress-fill" id="global-progress-fill"></div>
+    <span class="global-progress-text" id="global-progress-text">0% completado</span>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- ===== TAB: PRÁCTICA ===== -->
+  <!-- ================================================================= -->
+  <main id="tab-practice" class="tab-content active">
+    <section class="practice-layout">
+
+      <!-- ===== Panel izquierdo: Reto ===== -->
+      <div class="challenge-panel">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="badge" id="category-badge">Sintaxis</span>
+            <span class="level-pill" id="level-pill">Nivel 1</span>
+            <span class="difficulty-pill" id="difficulty-pill">Fácil</span>
+          </div>
+          <div class="panel-header-right">
+            <span class="streak-indicator" id="streak-indicator">🔥 0</span>
+          </div>
+        </div>
+
+        <!-- Barra de progreso del nivel -->
+        <div class="level-progress">
+          <div class="level-progress-fill" id="level-progress-fill"></div>
+          <span class="level-progress-text" id="level-progress-text">Reto 1 de 10</span>
+        </div>
+
+        <div class="challenge-info">
+          <h2 id="challenge-title">Escribe el atajo Emmet</h2>
+          <p id="challenge-desc">Consigue el siguiente HTML escribiendo la abreviatura Emmet correcta.</p>
+        </div>
+
+        <!-- Explicación de la sintaxis (nuevo) -->
+        <div class="syntax-explanation" id="syntax-explanation" hidden>
+          <div class="label">🧠 Sintaxis involucrada</div>
+          <div class="syntax-chips" id="syntax-chips"></div>
+          <p class="syntax-tip" id="syntax-tip"></p>
+        </div>
+
+        <div class="target-box">
+          <div class="label">🎯 Resultado esperado (HTML)</div>
+          <pre id="target-html"><code></code></pre>
+          <button class="copy-btn" id="btn-copy-target" title="Copiar HTML">📋</button>
+        </div>
+
+        <!-- Comparación visual (nuevo) -->
+        <div class="comparison-box" id="comparison-box" hidden>
+          <div class="label">🔍 Comparación</div>
+          <div class="comparison-grid">
+            <div class="comparison-item expected">
+              <span class="comparison-label">Esperado</span>
+              <pre id="compare-expected"><code></code></pre>
+            </div>
+            <div class="comparison-item actual">
+              <span class="comparison-label">Tuyo</span>
+              <pre id="compare-actual"><code></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="hint-box" id="hint-box" hidden>
+          <div class="label">💡 Pista</div>
+          <p id="hint-text"></p>
+          <button class="hint-more" id="btn-hint-more" hidden>Ver otra pista →</button>
+        </div>
+
+        <div class="actions">
+          <button id="btn-hint" class="btn ghost">💡 Pista</button>
+          <button id="btn-skip" class="btn ghost">⏭ Saltar</button>
+          <button id="btn-explain" class="btn ghost">🧠 Explicar</button>
+        </div>
+      </div>
+
+      <!-- ===== Panel derecho: Editor ===== -->
+      <div class="editor-panel">
+        <div class="panel-header">
+          <span>⌨️ Tu abreviatura Emmet</span>
+          <div class="editor-tools">
+            <button class="tool-btn" id="btn-format" title="Formatear">✨</button>
+            <button class="tool-btn" id="btn-undo" title="Deshacer">↶</button>
+            <span class="timer" id="timer">00:00</span>
+          </div>
+        </div>
+
+        <!-- Input con autocompletado visual (nuevo) -->
+        <div class="input-wrapper">
+          <input
+            id="emmet-input"
+            class="emmet-input"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Escribe aquí... ej: ul>li*3"
+          />
+          <div class="input-hints" id="input-hints"></div>
+        </div>
+
+        <!-- Preview en vivo (nuevo) -->
+        <div class="preview-box">
+          <div class="label">
+            📄 Tu resultado
+            <span class="preview-validity" id="preview-validity"></span>
+          </div>
+          <pre id="user-html"><code></code></pre>
+        </div>
+
+        <!-- Vista renderizada (nuevo) -->
+        <div class="render-box" id="render-box" hidden>
+          <div class="label">👁️ Vista renderizada</div>
+          <div id="render-preview" class="render-preview"></div>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <div class="actions-row">
+          <button id="btn-check" class="btn primary">✅ Comprobar</button>
+          <button id="btn-clear" class="btn ghost">🧹 Limpiar</button>
+          <button id="btn-reveal" class="btn ghost" title="Ver solución">👀 Solución</button>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p class="progress-text">
+          <span id="progress-count">0</span> / <span id="progress-total">0</span> completados
+          · <span id="accuracy-live">100%</span> precisión
+        </p>
+
+        <!-- Combo y logros (nuevo) -->
+        <div class="combo-display" id="combo-display" hidden>
+          <span class="combo-text">¡COMBO x<span id="combo-count">2</span>!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Toast de logro (nuevo) -->
+    <div class="achievement-toast" id="achievement-toast" hidden>
+      <div class="achievement-icon">🏆</div>
+      <div class="achievement-content">
+        <div class="achievement-title" id="achievement-title">¡Logro desbloqueado!</div>
+        <div class="achievement-desc" id="achievement-desc"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- ===== TAB: APRENDER (nuevo) ===== -->
+  <!-- ================================================================= -->
+  <main id="tab-learn" class="tab-content">
+    <div class="learn-header">
+      <h2>📖 Aprende la sintaxis Emmet paso a paso</h2>
+      <p>Selecciona un tema para ver explicaciones, ejemplos y practicar</p>
+    </div>
+
+    <!-- Sidebar de temas -->
+    <div class="learn-layout">
+      <aside class="learn-sidebar">
+        <div class="learn-sidebar-section">
+          <h3>🌳 HTML — Estructura</h3>
+          <ul class="learn-nav" id="learn-nav-html">
+            <li><button data-topic="child" class="learn-nav-item active">Child (>)</button></li>
+            <li><button data-topic="sibling" class="learn-nav-item">Sibling (+)</button></li>
+            <li><button data-topic="climb-up" class="learn-nav-item">Climb-up (^)</button></li>
+            <li><button data-topic="grouping" class="learn-nav-item">Grouping ()</button></li>
+            <li><button data-topic="multiplication" class="learn-nav-item">Multiplicación (*)</button></li>
+            <li><button data-topic="naming" class="learn-nav-item">Naming & Numbering ($)</button></li>
+            <li><button data-topic="id-class" class="learn-nav-item">ID y Class (# .)</button></li>
+            <li><button data-topic="attributes" class="learn-nav-item">Atributos personalizados</button></li>
+            <li><button data-topic="text" class="learn-nav-item">Texto ({})</button></li>
+            <li><button data-topic="implicit" class="learn-nav-item">Tag implícita</button></li>
+          </ul>
+        </div>
+
+        <div class="learn-sidebar-section">
+          <h3>📝 HTML — Formularios</h3>
+          <ul class="learn-nav" id="learn-nav-forms">
+            <li><button data-topic="form" class="learn-nav-item">Formularios</button></li>
+            <li><button data-topic="input" class="learn-nav-item">Inputs</button></li>
+            <li><button data-topic="button" class="learn-nav-item">Botones</button></li>
+            <li><button data-topic="select" class="learn-nav-item">Select & Option</button></li>
+          </ul>
+        </div>
+
+        <div class="learn-sidebar-section">
+          <h3>📋 HTML — Contenido</h3>
+          <ul class="learn-nav" id="learn-nav-content">
+            <li><button data-topic="tables" class="learn-nav-item">Tablas</button></li>
+            <li><button data-topic="lists" class="learn-nav-item">Listas</button></li>
+            <li><button data-topic="doctypes" class="learn-nav-item">DOCTYPEs</button></li>
+            <li><button data-topic="semantic" class="learn-nav-item">Semántica</button></li>
+          </ul>
+        </div>
+
+        <div class="learn-sidebar-section">
+          <h3>🎨 CSS</h3>
+          <ul class="learn-nav" id="learn-nav-css">
+            <li><button data-topic="css-visual" class="learn-nav-item">Formato visual</button></li>
+            <li><button data-topic="css-margin" class="learn-nav-item">Margin & Padding</button></li>
+            <li><button data-topic="css-box" class="learn-nav-item">Box-sizing</button></li>
+            <li><button data-topic="css-font" class="learn-nav-item">Fuentes y texto</button></li>
+            <li><button data-topic="css-bg" class="learn-nav-item">Background & Color</button></li>
+            <li><button data-topic="css-border" class="learn-nav-item">Bordes & Outline</button></li>
+            <li><button data-topic="css-flex" class="learn-nav-item">Flexbox</button></li>
+            <li><button data-topic="css-transform" class="learn-nav-item">Transform & Transition</button></li>
+            <li><button data-topic="css-animation" class="learn-nav-item">Animaciones</button></li>
+            <li><button data-topic="css-content" class="learn-nav-item">Contenido generado</button></li>
+            <li><button data-topic="css-print" class="learn-nav-item">Print</button></li>
+            <li><button data-topic="css-others" class="learn-nav-item">Otros</button></li>
+          </ul>
+        </div>
+
+        <div class="learn-sidebar-section">
+          <h3>🔧 Avanzado</h3>
+          <ul class="learn-nav" id="learn-nav-advanced">
+            <li><button data-topic="xslt" class="learn-nav-item">XSL / XSLT</button></li>
+            <li><button data-topic="lorem" class="learn-nav-item">Lorem ipsum</button></li>
+            <li><button data-topic="wrap" class="learn-nav-item">Wrap with abbreviation</button></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Contenido del tema -->
+      <div class="learn-content" id="learn-content">
+        <!-- Se llena dinámicamente desde JS -->
+        <div class="learn-placeholder">
+          <div class="placeholder-icon">📖</div>
+          <h3>Selecciona un tema</h3>
+          <p>Elige cualquier tema del menú lateral para ver la explicación detallada, ejemplos y ejercicios prácticos.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- ===== TAB: PLAYGROUND (nuevo) ===== -->
+  <!-- ================================================================= -->
+  <main id="tab-playground" class="tab-content">
+    <div class="playground-header">
+      <h2>🧪 Playground de Emmet</h2>
+      <p>Escribe cualquier abreviatura Emmet y ve el resultado en tiempo real</p>
+    </div>
+
+    <div class="playground-layout">
+      <!-- Panel izquierdo: input -->
+      <div class="playground-panel">
+        <div class="panel-header">
+          <span>⌨️ Abreviatura Emmet</span>
+          <button class="tool-btn" id="pg-clear" title="Limpiar">🧹</button>
+        </div>
+        <textarea
+          id="pg-input"
+          class="pg-textarea"
+          placeholder="Escribe tu abreviatura Emmet aquí...&#10;&#10;Ejemplos:&#10;ul>li*5&#10;div.container>header+main+footer&#10;(div>h1+p)*3"
+        ></textarea>
+
+        <div class="pg-examples">
+          <span class="pg-examples-label">Ejemplos rápidos:</span>
+          <div class="pg-example-chips" id="pg-example-chips">
+            <button class="example-chip" data-emmet="ul>li*5">ul>li*5</button>
+            <button class="example-chip" data-emmet="div.container>header+main+footer">div.container>header+main+footer</button>
+            <button class="example-chip" data-emmet="(div>h1+p)*3">(div>h1+p)*3</button>
+            <button class="example-chip" data-emmet="a{Click aquí}">a{Click aquí}</button>
+            <button class="example-chip" data-emmet="input:email+input:password+button:submit">input:email+...</button>
+            <button class="example-chip" data-emmet="table>tr>td*3">table>tr>td*3</button>
+          </div>
+        </div>
+
+        <div class="pg-options">
+          <label class="pg-option">
+            <input type="checkbox" id="pg-format" checked> Formatear HTML
+          </label>
+          <label class="pg-option">
+            <input type="checkbox" id="pg-render" checked> Vista renderizada
+          </label>
+          <label class="pg-option">
+            <input type="checkbox" id="pg-syntax" checked> Mostrar sintaxis detectada
+          </label>
+        </div>
+      </div>
+
+      <!-- Panel derecho: resultado -->
+      <div class="playground-panel">
+        <div class="panel-header">
+          <span>📄 Resultado HTML</span>
+          <button class="tool-btn" id="pg-copy" title="Copiar">📋</button>
+        </div>
+        <pre id="pg-output" class="pg-output"><code>El resultado aparecerá aquí...</code></pre>
+
+        <div class="pg-render-box" id="pg-render-box">
+          <div class="panel-header">
+            <span>👁️ Vista renderizada</span>
+          </div>
+          <div id="pg-render-preview" class="pg-render-preview"></div>
+        </div>
+
+        <div class="pg-syntax-box" id="pg-syntax-box">
+          <div class="panel-header">
+            <span>🔍 Sintaxis detectada</span>
+          </div>
+          <div id="pg-syntax-detected" class="pg-syntax-detected">
+            <p class="pg-syntax-empty">Escribe una abreviatura para ver la sintaxis detectada</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- ===== TAB: CHEATSHEET ===== -->
+  <!-- ================================================================= -->
+  <main id="tab-cheatsheet" class="tab-content">
+    <div class="cheatsheet-header">
+      <div>
+        <h2>📚 Cheatsheet de Emmet</h2>
+        <p>Referencia rápida de toda la sintaxis. Haz clic en cualquier atajo para probarlo en el playground.</p>
+      </div>
+      <input id="cheat-search" class="search" placeholder="🔍 Buscar atajo, etiqueta o propiedad..." />
+    </div>
+
+    <!-- Filtros por categoría (nuevo) -->
+    <div class="cheatsheet-filters" id="cheatsheet-filters">
+      <button class="filter-chip active" data-filter="all">Todo</button>
+      <button class="filter-chip" data-filter="syntax">Sintaxis</button>
+      <button class="filter-chip" data-filter="html">HTML</button>
+      <button class="filter-chip" data-filter="forms">Formularios</button>
+      <button class="filter-chip" data-filter="css">CSS</button>
+      <button class="filter-chip" data-filter="content">Contenido</button>
+      <button class="filter-chip" data-filter="advanced">Avanzado</button>
+    </div>
+
+    <div id="cheatsheet-container" class="cheatsheet-grid"></div>
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- ===== TAB: ESTADÍSTICAS ===== -->
+  <!-- ================================================================= -->
+  <main id="tab-stats" class="tab-content">
+    <div class="stats-header">
+      <h2>📊 Tus estadísticas</h2>
+      <p>Revisa tu progreso, logros y áreas de mejora</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-value" id="stat-completed">0</div>
+        <div class="stat-label">Completados</div>
+        <div class="stat-trend" id="stat-completed-trend"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-value" id="stat-accuracy">0%</div>
+        <div class="stat-label">Precisión</div>
+        <div class="stat-trend" id="stat-accuracy-trend"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-value" id="stat-streak">0</div>
+        <div class="stat-label">Racha actual</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-value" id="stat-best">0</div>
+        <div class="stat-label">Mejor racha</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⏱️</div>
+        <div class="stat-value" id="stat-time">0m</div>
+        <div class="stat-label">Tiempo total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value" id="stat-xp">0</div>
+        <div class="stat-label">XP total</div>
+      </div>
+    </div>
+
+    <div class="stats-detail">
+      <h3>Progreso por categoría</h3>
+      <div id="category-progress" class="category-progress-list"></div>
+    </div>
+
+    <!-- Logros (nuevo) -->
+    <div class="stats-detail">
+      <h3>🏅 Logros</h3>
+      <div id="achievements-grid" class="achievements-grid"></div>
+    </div>
+
+    <!-- Historial de errores frecuentes (nuevo) -->
+    <div class="stats-detail">
+      <h3>🔍 Errores frecuentes</h3>
+      <div id="mistakes-list" class="mistakes-list">
+        <p class="empty-state">Aún no hay errores registrados. ¡Sigue practicando!</p>
+      </div>
+    </div>
+
+    <div class="stats-actions">
+      <button id="btn-export" class="btn ghost">📤 Exportar progreso</button>
+      <button id="btn-import" class="btn ghost">📥 Importar progreso</button>
+      <button id="btn-reset" class="btn danger">🔄 Reiniciar progreso</button>
+    </div>
+  </main>
+
+  <!-- ===== Modales (nuevo) ===== -->
+  <div class="modal-overlay" id="modal-overlay" hidden>
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h3 id="modal-title"></h3>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-footer" id="modal-footer"></div>
+    </div>
+  </div>
+
+  <!-- ===== Scripts ===== -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
